@@ -6,7 +6,7 @@ import { NAV_LINKS } from '../data/site'
 export default function HeroSection() {
   return (
     <section id="top" className="relative flex h-screen flex-col" style={{ overflowX: 'clip' }}>
-      <FadeIn as="nav" delay={0} y={-20} className="flex justify-between px-6 pt-6 md:px-10 md:pt-8">
+      <FadeIn as="nav" delay={0} y={-20} className="flex justify-end gap-6 px-6 pt-6 sm:gap-8 md:gap-10 md:px-10 md:pt-8 lg:gap-12">
         {NAV_LINKS.map((link) => (
           <a
             key={link.label}
