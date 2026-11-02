@@ -66,8 +66,8 @@ export default function HeroSection() {
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 sm:gap-8 md:gap-10">
         <div className="w-full overflow-hidden">
           <FadeIn delay={0.15} y={40}>
-            <h1 className="hero-heading w-full whitespace-nowrap text-center text-[14vw] font-black uppercase leading-none tracking-tight sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw]">
-              Hi, i&apos;m jack
+            <h1 className="hero-heading w-full whitespace-nowrap text-center text-[14vw] font-black uppercase leading-none tracking-tight sm:text-[15vw] md:text-[16vw]">
+              Hi, i&apos;m tooba
             </h1>
           </FadeIn>
         </div>
@@ -78,7 +78,7 @@ export default function HeroSection() {
             className="max-w-[300px] text-center font-light uppercase leading-snug tracking-[0.2em] text-[#D7E2EA] sm:max-w-[480px] md:max-w-[640px]"
             style={{ fontSize: 'clamp(0.8rem, 1.5vw, 1.4rem)' }}
           >
-            a 3d creator driven by crafting striking and unforgettable projects
+            a wordpress developer who builds fast websites that google can find and index
           </p>
           <span className="hidden h-px w-10 bg-gradient-to-l from-transparent to-[#D7E2EA]/60 sm:block md:w-20" />
         </FadeIn>

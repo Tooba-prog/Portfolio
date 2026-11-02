@@ -6,7 +6,14 @@ import ContactButton from '../components/ContactButton'
 import SocialIcon from '../components/SocialIcon'
 import { SITE } from '../data/site'
 
-const SERVICE_OPTIONS = ['3D Modeling', 'Rendering', 'Motion Design', 'Branding', 'Web Design', 'Something else']
+const SERVICE_OPTIONS = [
+  'WordPress Development',
+  'WooCommerce Stores',
+  'Speed Optimization',
+  'On-Page & Technical SEO',
+  'Maintenance & Support',
+  'Something else',
+]
 
 const FIELD =
   'w-full rounded-[28px] border-2 border-[#D7E2EA]/25 bg-transparent px-6 py-4 font-light text-[#D7E2EA] placeholder:text-[#D7E2EA]/40 outline-none transition-colors duration-200 focus:border-[#D7E2EA]'
@@ -40,7 +47,7 @@ export default function ContactSection() {
 
     // Without a key, fall back to opening the visitor's email app so the form still works
     if (!WEB3FORMS_KEY) {
-      const body = `Hi ${SITE.name},\n\n${message}\n\n— ${name}\n${email}`
+      const body = `Hi ${SITE.firstName},\n\n${message}\n\n— ${name}\n${email}`
       window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
       return
     }

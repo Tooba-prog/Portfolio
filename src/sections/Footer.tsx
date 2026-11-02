@@ -33,7 +33,7 @@ export default function Footer() {
               style={{ fontSize: 'clamp(4rem, 22vw, 340px)' }}
               aria-hidden="true"
             >
-              {SITE.name}
+              {SITE.firstName}
             </p>
           </FadeIn>
         </div>

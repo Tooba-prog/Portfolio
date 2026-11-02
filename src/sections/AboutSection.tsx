@@ -32,7 +32,7 @@ const DECORATIONS = [
 ]
 
 const ABOUT_TEXT =
-  "With more than five years of experience in design, i focus on branding, web design, and user experience, i truly enjoy working with businesses that aim to stand out and present their best image. Let's build something incredible together!"
+  "I'm a dedicated WordPress developer with 3+ years of experience creating fast, mobile-friendly, and SEO-optimized websites for small businesses, agencies, and e-commerce brands. Open to freelance projects and long-term collaborations. Let's connect!"
 
 export default function AboutSection() {
   return (

@@ -2,29 +2,29 @@ import FadeIn from '../components/FadeIn'
 
 const SERVICES = [
   {
-    name: '3D Modeling',
+    name: 'WordPress Development',
     description:
-      'Creation of detailed objects, characters, or environments tailored to specific client needs, ideal for games, products, and visualizations.',
+      'Custom WordPress websites with theme setup, layout building, and plugin customization — modern, responsive, and easy to manage without technical skills.',
   },
   {
-    name: 'Rendering',
+    name: 'WooCommerce Stores',
     description:
-      'High-quality, photorealistic renders that showcase designs with custom lighting, textures, and materials to bring concepts to life.',
+      'WooCommerce store development, from product pages and checkout customization to payment gateway configuration.',
   },
   {
-    name: 'Motion Design',
+    name: 'Speed Optimization',
     description:
-      'Dynamic animations and motion graphics that add energy and storytelling to brands, products, and digital experiences.',
+      'Website redesign and speed optimization so your site loads fast and works seamlessly across all devices.',
   },
   {
-    name: 'Branding',
+    name: 'On-Page & Technical SEO',
     description:
-      'Crafting cohesive visual identities -- from logos to full brand systems -- that communicate a clear and memorable presence.',
+      'Keyword research, meta titles and descriptions, content optimization, and fixing indexing and crawling issues so Google can find you.',
   },
   {
-    name: 'Web Design',
+    name: 'Maintenance & Support',
     description:
-      'Designing clean, modern, and conversion-focused websites with attention to layout, typography, and user experience.',
+      'Bug fixing, security improvements, updates, backups, and monthly maintenance, plus website migration and domain transfer.',
   },
 ]
 
