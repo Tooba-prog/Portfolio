@@ -3,7 +3,6 @@ import MarqueeSection from './sections/MarqueeSection'
 import AboutSection from './sections/AboutSection'
 import ServicesSection from './sections/ServicesSection'
 import ProjectsSection from './sections/ProjectsSection'
-import PricingSection from './sections/PricingSection'
 import TestimonialsSection from './sections/TestimonialsSection'
 import ContactSection from './sections/ContactSection'
 import Footer from './sections/Footer'
@@ -16,7 +15,6 @@ export default function App() {
       <AboutSection />
       <ServicesSection />
       <ProjectsSection />
-      <PricingSection />
       <TestimonialsSection />
       <ContactSection />
       <Footer />
