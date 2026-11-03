@@ -95,7 +95,7 @@ export default function ContactSection() {
     { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
     // Shown only once a WhatsApp number is set in site.ts
     ...(SITE.whatsapp
-      ? [{ icon: MessageCircle, label: 'WhatsApp', value: `+${SITE.whatsapp}`, href: whatsappLink(), external: true }]
+      ? [{ icon: MessageCircle, label: 'WhatsApp', value: SITE.whatsappDisplay, href: whatsappLink(), external: true }]
       : []),
     ...(LINKEDIN ? [{ icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/tooba-farid', href: LINKEDIN, external: true }] : []),
     { icon: MapPin, label: 'Location', value: SITE.location },

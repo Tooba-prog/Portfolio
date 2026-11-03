@@ -5,7 +5,8 @@ export const SITE = {
   email: 'toobafarid242@gmail.com',
   // WhatsApp number in international format, digits only (e.g. '923001234567').
   // Leave empty to hide the WhatsApp button and contact row.
-  whatsapp: '',
+  whatsapp: '923325788004',
+  whatsappDisplay: '+92 332 5788004',
   location: 'Punjab, Pakistan',
   availability: 'Usually replies within 24 hours',
   socials: [
