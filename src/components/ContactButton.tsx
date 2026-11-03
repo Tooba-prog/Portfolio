@@ -17,9 +17,8 @@ const STYLE = {
   outlineOffset: '-3px',
 }
 
-// contact-btn: the living portrait shows heart eyes while one of these is hovered
 const CLASSES =
-  'contact-btn inline-block rounded-full px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4 text-xs sm:text-sm md:text-base font-medium uppercase tracking-widest text-white transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
+  'inline-block rounded-full px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4 text-xs sm:text-sm md:text-base font-medium uppercase tracking-widest text-white transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
 
 export default function ContactButton({
   label = 'Contact Me',
