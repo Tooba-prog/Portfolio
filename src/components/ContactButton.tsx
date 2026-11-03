@@ -1,4 +1,5 @@
 import type { MouseEvent } from 'react'
+import { ArrowUpRight } from 'lucide-react'
 
 type ContactButtonProps = {
   label?: string
@@ -10,18 +11,21 @@ type ContactButtonProps = {
   disabled?: boolean
 }
 
-const STYLE = {
-  background: 'linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%)',
-  boxShadow: '0px 4px 4px rgba(181, 1, 167, 0.25), 4px 4px 12px #7721B1 inset',
-  outline: '2px solid white',
-  outlineOffset: '-3px',
+// Solid black button with an orange arrow; turns orange on hover
+const CLASSES =
+  'group inline-flex items-center justify-center gap-2 bg-[#111] px-6 py-3 font-exo text-[14px] font-medium text-white transition-colors duration-200 hover:bg-[#FF6A00] sm:px-7 sm:py-3.5 sm:text-[15px] disabled:cursor-wait disabled:opacity-60'
+
+function Arrow() {
+  return (
+    <ArrowUpRight
+      className="h-4 w-4 text-[#FF6A00] transition-colors duration-200 group-hover:text-white"
+      strokeWidth={1.75}
+    />
+  )
 }
 
-const CLASSES =
-  'inline-block rounded-full px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4 text-xs sm:text-sm md:text-base font-medium uppercase tracking-widest text-white transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]'
-
 export default function ContactButton({
-  label = 'Contact Me',
+  label = "Let's Talk",
   href = '#contact',
   type,
   className = '',
@@ -30,20 +34,17 @@ export default function ContactButton({
 }: ContactButtonProps) {
   if (type) {
     return (
-      <button
-        type={type}
-        disabled={disabled}
-        className={`${CLASSES} disabled:cursor-wait disabled:opacity-60 disabled:hover:scale-100 ${className}`}
-        style={STYLE}
-      >
+      <button type={type} disabled={disabled} className={`${CLASSES} ${className}`}>
         {label}
+        <Arrow />
       </button>
     )
   }
 
   return (
-    <a href={href} onClick={onClick} className={`${CLASSES} ${className}`} style={STYLE}>
+    <a href={href} onClick={onClick} className={`${CLASSES} ${className}`}>
       {label}
+      <Arrow />
     </a>
   )
 }

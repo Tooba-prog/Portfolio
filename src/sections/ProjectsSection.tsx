@@ -3,9 +3,9 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import type { MotionValue } from 'framer-motion'
 import { X } from 'lucide-react'
-import FadeIn from '../components/FadeIn'
 import LiveProjectButton from '../components/LiveProjectButton'
 import ContactButton from '../components/ContactButton'
+import SectionHeading, { Accent, SectionLabel } from '../components/SectionHeading'
 
 const img = (file: string) =>
   `https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2F${file}.png&w=1280&q=85`
@@ -56,8 +56,6 @@ const PROJECTS: Project[] = [
   },
 ]
 
-const IMAGE_RADIUS = 'rounded-[40px] sm:rounded-[50px] md:rounded-[60px]'
-
 function ProjectCard({
   project,
   index,
@@ -75,27 +73,25 @@ function ProjectCard({
   const scale = useTransform(progress, [index / total, 1], [1, targetScale])
 
   return (
-    <div className="sticky top-24 flex h-[85vh] items-start justify-center md:top-32">
+    // min-h (not h) plus bottom padding for the stacking offset: on tall screens the card can be taller than
+    // 85vh, and a fixed-height slot would let it spill into the next section. The last card has nothing
+    // stacking after it, so its slot just fits the card instead of leaving empty space below.
+    <div
+      className={`sticky top-24 flex items-start justify-center md:top-32 ${index < total - 1 ? 'min-h-[85vh]' : ''}`}
+      style={{ paddingBottom: `${index * 28}px` }}
+    >
       <motion.div
-        className="w-full origin-top rounded-[40px] border-2 border-[#D7E2EA] bg-[#0C0C0C] p-4 sm:rounded-[50px] sm:p-6 md:rounded-[60px] md:p-8"
+        className="w-full origin-top border border-[#E6E6E6] bg-[#F7F7F7] p-4 shadow-[0_-12px_40px_rgba(0,0,0,0.04)] sm:p-6 md:p-8"
         style={{ scale, top: `${index * 28}px`, position: 'relative' }}
       >
         <div className="mb-4 flex flex-wrap items-end justify-between gap-4 sm:mb-6 md:mb-8">
           <div className="flex items-end gap-4 sm:gap-6">
-            <span
-              className="hero-heading font-black leading-none"
-              style={{ fontSize: 'clamp(3rem, 10vw, 140px)' }}
-            >
+            <span className="font-exo font-light leading-none text-[#BBBBBB]" style={{ fontSize: 'clamp(3rem, 8vw, 110px)' }}>
               {String(index + 1).padStart(2, '0')}
             </span>
-            <div className="flex flex-col pb-1 sm:pb-2">
-              <span className="text-xs font-light uppercase tracking-widest text-[#D7E2EA]/60 sm:text-sm md:text-base">
-                {project.category}
-              </span>
-              <h3
-                className="font-medium uppercase text-[#D7E2EA]"
-                style={{ fontSize: 'clamp(1rem, 2.2vw, 2.1rem)' }}
-              >
+            <div className="flex flex-col gap-1.5 pb-1 sm:pb-2">
+              <SectionLabel>{project.category}</SectionLabel>
+              <h3 className="font-exo font-semibold text-[#111]" style={{ fontSize: 'clamp(1.15rem, 2.2vw, 2.1rem)' }}>
                 {project.name}
               </h3>
             </div>
@@ -109,24 +105,19 @@ function ProjectCard({
               src={project.col1[0]}
               alt={`${project.name} preview 1`}
               loading="lazy"
-              className={`w-full object-cover ${IMAGE_RADIUS}`}
+              className="w-full object-cover"
               style={{ height: 'clamp(130px, 16vw, 230px)' }}
             />
             <img
               src={project.col1[1]}
               alt={`${project.name} preview 2`}
               loading="lazy"
-              className={`w-full object-cover ${IMAGE_RADIUS}`}
+              className="w-full object-cover"
               style={{ height: 'clamp(160px, 22vw, 340px)' }}
             />
           </div>
           <div className="w-[60%]">
-            <img
-              src={project.col2}
-              alt={`${project.name} preview 3`}
-              loading="lazy"
-              className={`h-full w-full object-cover ${IMAGE_RADIUS}`}
-            />
+            <img src={project.col2} alt={`${project.name} preview 3`} loading="lazy" className="h-full w-full object-cover" />
           </div>
         </div>
       </motion.div>
@@ -148,7 +139,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0C0C0C]/80 p-4 backdrop-blur-md sm:p-8"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#111]/50 p-4 backdrop-blur-sm sm:p-8"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -158,7 +149,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
       aria-label={project.name}
     >
       <motion.div
-        className="relative max-h-full w-full max-w-5xl overflow-y-auto rounded-[40px] border-2 border-[#D7E2EA] bg-[#0C0C0C] p-5 sm:rounded-[50px] sm:p-8 md:p-10"
+        className="relative max-h-full w-full max-w-5xl overflow-y-auto bg-white p-5 sm:p-8 md:p-10"
         initial={{ y: 40, scale: 0.96 }}
         animate={{ y: 0, scale: 1 }}
         exit={{ y: 40, scale: 0.96 }}
@@ -169,41 +160,33 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#D7E2EA] text-[#D7E2EA] transition-colors duration-200 hover:bg-[#D7E2EA]/10 sm:right-8 sm:top-8"
+          className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center border border-[#111] text-[#111] transition-colors duration-200 hover:bg-[#111] hover:text-white sm:right-8 sm:top-8"
         >
-          <X size={20} />
+          <X size={20} strokeWidth={1.75} />
         </button>
 
-        <span className="text-xs font-light uppercase tracking-widest text-[#D7E2EA]/60 sm:text-sm">{project.category}</span>
+        <SectionLabel>{project.category}</SectionLabel>
         <h3
-          className="hero-heading mt-1 pr-14 font-black uppercase leading-none tracking-tight"
-          style={{ fontSize: 'clamp(2rem, 6vw, 4.5rem)' }}
+          className="mt-3 pr-14 font-exo font-extrabold leading-[1.05] tracking-tight text-[#111]"
+          style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}
         >
           {project.name}
         </h3>
-        <p
-          className="mt-5 max-w-2xl font-light leading-relaxed text-[#D7E2EA]/80"
-          style={{ fontSize: 'clamp(0.95rem, 1.4vw, 1.15rem)' }}
-        >
+        <p className="mt-5 max-w-2xl font-inter leading-[1.75] text-[#666]" style={{ fontSize: 'clamp(0.95rem, 1.3vw, 1.1rem)' }}>
           {project.description}
         </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:gap-4">
-          <img src={project.col2} alt={`${project.name} main`} className="w-full rounded-[30px] object-cover sm:rounded-[40px]" />
+          <img src={project.col2} alt={`${project.name} main`} className="w-full object-cover" />
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {project.col1.map((src, i) => (
-              <img
-                key={src}
-                src={src}
-                alt={`${project.name} detail ${i + 1}`}
-                className="aspect-[4/3] w-full rounded-[30px] object-cover sm:rounded-[40px]"
-              />
+              <img key={src} src={src} alt={`${project.name} detail ${i + 1}`} className="aspect-[4/3] w-full object-cover" />
             ))}
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-          <p className="text-center font-light text-[#D7E2EA]/60 sm:text-left">Want something like this for your brand?</p>
+        <div className="mt-8 flex flex-col items-center gap-4 bg-[#F7F7F7] p-5 sm:flex-row sm:justify-between sm:p-6">
+          <p className="text-center font-inter text-[#666] sm:text-left">Want something like this for your brand?</p>
           <ContactButton
             label="Start a Project"
             onClick={(e) => {
@@ -228,20 +211,19 @@ export default function ProjectsSection() {
   })
 
   return (
-    <section
-      id="projects"
-      className="relative z-10 -mt-10 rounded-t-[40px] bg-[#0C0C0C] px-5 pb-28 pt-20 sm:-mt-12 sm:rounded-t-[50px] sm:px-8 sm:pb-32 sm:pt-24 md:-mt-14 md:rounded-t-[60px] md:px-10 md:pb-40 md:pt-32"
-    >
-      <FadeIn delay={0} y={40}>
-        <h2
-          className="hero-heading mb-10 text-center font-black uppercase leading-none tracking-tight sm:mb-14 md:mb-20"
-          style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
-        >
-          Project
-        </h2>
-      </FadeIn>
+    <section id="projects" className="relative bg-white px-4 pb-20 pt-10 sm:px-8 lg:px-[5.6vw] lg:pb-28">
+      <SectionHeading
+        label="my work"
+        bold="Recent"
+        regular={
+          <>
+            W<Accent>o</Accent>rk
+          </>
+        }
+        className="mb-10 lg:mb-14"
+      />
 
-      <div ref={containerRef} className="mx-auto max-w-6xl">
+      <div ref={containerRef}>
         {PROJECTS.map((project, i) => (
           <ProjectCard
             key={project.name}

@@ -34,7 +34,9 @@ export default function AnimatedText({ text, className, style }: AnimatedTextPro
   const ref = useRef<HTMLParagraphElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start 0.8', 'end 0.2'],
+    // Starts as the text enters the bottom of the screen and is fully revealed once its
+    // middle reaches 55% down, so it reads complete by the time it is centred at any text height
+    offset: ['start 0.95', 'center 0.55'],
   })
 
   const chars = text.split('')

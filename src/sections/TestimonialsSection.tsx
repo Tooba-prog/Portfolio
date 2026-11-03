@@ -1,5 +1,6 @@
 import { Quote, Star } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
+import SectionHeading, { Accent, ORANGE } from '../components/SectionHeading'
 
 // Sample reviews — replace with real client feedback
 const TESTIMONIALS = [
@@ -31,48 +32,44 @@ const initials = (name: string) =>
 
 export default function TestimonialsSection() {
   return (
-    <section
-      id="testimonials"
-      className="relative z-30 -mt-10 rounded-t-[40px] bg-[#0C0C0C] px-5 py-20 sm:-mt-12 sm:rounded-t-[50px] sm:px-8 sm:py-24 md:-mt-14 md:rounded-t-[60px] md:px-10 md:py-32"
-    >
-      <FadeIn delay={0} y={40}>
-        <h2
-          className="hero-heading mb-16 text-center font-black uppercase leading-none tracking-tight sm:mb-20 md:mb-28"
-          style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
-        >
-          Reviews
-        </h2>
-      </FadeIn>
+    <section id="testimonials" className="bg-white px-4 py-20 sm:px-8 lg:px-[5.6vw] lg:py-28">
+      <SectionHeading
+        label="testimonial"
+        bold="Client"
+        regular={
+          <>
+            Re<Accent>v</Accent>iews
+          </>
+        }
+        align="center"
+        className="mb-12 lg:mb-16"
+      />
 
-      <div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3 lg:gap-5">
         {TESTIMONIALS.map((item, i) => (
           <FadeIn
             key={item.name}
             delay={i * 0.1}
-            className="flex flex-col rounded-[40px] border-2 border-[#D7E2EA] bg-[#0C0C0C] p-8 sm:rounded-[50px] sm:p-10"
+            className="flex flex-col bg-[#F7F7F7] p-7 transition-colors duration-300 hover:bg-[#F1F1F1] sm:p-9"
           >
-            <Quote size={36} className="text-[#B600A8]" />
-            <div className="mt-6 flex gap-1 text-[#BE4C00]">
-              {Array.from({ length: 5 }).map((_, star) => (
-                <Star key={star} size={16} fill="currentColor" />
-              ))}
+            <div className="flex items-center justify-between">
+              <Quote size={34} strokeWidth={1.5} style={{ color: ORANGE }} />
+              <div className="flex gap-1" style={{ color: ORANGE }}>
+                {Array.from({ length: 5 }).map((_, star) => (
+                  <Star key={star} size={14} fill="currentColor" strokeWidth={0} />
+                ))}
+              </div>
             </div>
-            <p
-              className="mt-5 flex-1 font-light leading-relaxed text-[#D7E2EA]"
-              style={{ fontSize: 'clamp(0.95rem, 1.3vw, 1.15rem)' }}
-            >
+            <p className="mt-6 flex-1 font-inter leading-[1.8] text-[#333]" style={{ fontSize: 'clamp(0.95rem, 1.15vw, 1.05rem)' }}>
               &ldquo;{item.quote}&rdquo;
             </p>
-            <div className="mt-8 flex items-center gap-4">
-              <span
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-sm font-medium text-white"
-                style={{ background: 'linear-gradient(123deg, #B600A8 0%, #7621B0 60%, #BE4C00 100%)' }}
-              >
+            <div className="mt-8 flex items-center gap-4 border-t border-[#E2E2E2] pt-6">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center bg-[#111] font-exo text-sm font-semibold text-white">
                 {initials(item.name)}
               </span>
               <div>
-                <p className="font-medium uppercase tracking-wider text-[#D7E2EA]">{item.name}</p>
-                <p className="text-sm font-light text-[#D7E2EA]/50">{item.role}</p>
+                <p className="font-exo text-[17px] font-semibold text-[#111]">{item.name}</p>
+                <p className="font-inter text-[13px] text-[#888]">{item.role}</p>
               </div>
             </div>
           </FadeIn>

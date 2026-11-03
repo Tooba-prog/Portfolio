@@ -1,75 +1,87 @@
+import { ArrowUpRight } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
+import SectionHeading, { Accent } from '../components/SectionHeading'
+import { selectService } from '../data/site'
 
 const SERVICES = [
   {
     name: 'WordPress Development',
     description:
-      'Custom WordPress websites with theme setup, layout building, and plugin customization — modern, responsive, and easy to manage without technical skills.',
+      'Custom WordPress and WooCommerce websites built with Elementor — fast, responsive, and easy to manage without technical skills.',
   },
   {
-    name: 'WooCommerce Stores',
+    name: 'Website Redesign',
     description:
-      'WooCommerce store development, from product pages and checkout customization to payment gateway configuration.',
+      'A modern refresh for an outdated site: cleaner layout, faster load times, and a structure that turns visitors into customers.',
   },
   {
-    name: 'Speed Optimization',
+    name: 'On-Page SEO',
     description:
-      'Website redesign and speed optimization so your site loads fast and works seamlessly across all devices.',
+      'Keyword research, meta titles and descriptions, headings, internal links, and content optimization for every important page.',
   },
   {
-    name: 'On-Page & Technical SEO',
+    name: 'Technical SEO',
     description:
-      'Keyword research, meta titles and descriptions, content optimization, and fixing indexing and crawling issues so Google can find you.',
+      'Site audits, crawling and indexing fixes, speed and Core Web Vitals, and tracking in Google Search Console.',
   },
   {
-    name: 'Maintenance & Support',
+    name: 'Off-Page SEO',
     description:
-      'Bug fixing, security improvements, updates, backups, and monthly maintenance, plus website migration and domain transfer.',
+      'Building authority with quality backlinks, local listings, and brand mentions that help your site rank higher.',
   },
 ]
 
 export default function ServicesSection() {
   return (
-    <section
-      id="services"
-      className="rounded-t-[40px] bg-white px-5 py-20 sm:rounded-t-[50px] sm:px-8 sm:py-24 md:rounded-t-[60px] md:px-10 md:py-32"
-    >
-      <FadeIn delay={0} y={40}>
-        <h2
-          className="mb-16 text-center font-black uppercase leading-none tracking-tight text-[#0C0C0C] sm:mb-20 md:mb-28"
-          style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
-        >
-          Services
-        </h2>
-      </FadeIn>
-
-      <div className="mx-auto max-w-5xl">
-        {SERVICES.map((service, i) => (
-          <FadeIn
-            key={service.name}
-            delay={i * 0.1}
-            className="flex items-center gap-6 py-8 text-[#0C0C0C] sm:gap-10 sm:py-10 md:gap-14 md:py-12"
-            style={{
-              borderTop: i === 0 ? '1px solid rgba(12, 12, 12, 0.15)' : undefined,
-              borderBottom: '1px solid rgba(12, 12, 12, 0.15)',
-            }}
-          >
-            <span className="font-black leading-none" style={{ fontSize: 'clamp(3rem, 10vw, 140px)' }}>
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <div className="flex flex-col gap-2">
-              <h3 className="font-medium uppercase" style={{ fontSize: 'clamp(1rem, 2.2vw, 2.1rem)' }}>
-                {service.name}
-              </h3>
-              <p
-                className="max-w-2xl font-light leading-relaxed opacity-60"
-                style={{ fontSize: 'clamp(0.85rem, 1.6vw, 1.25rem)' }}
-              >
-                {service.description}
-              </p>
-            </div>
+    <section id="services" className="bg-white px-4 py-20 sm:px-8 lg:px-[5.6vw] lg:py-28">
+      <div className="bg-[#F7F7F7] px-5 py-14 sm:px-10 lg:px-14 lg:py-20">
+        <div className="mb-12 flex flex-col gap-6 lg:mb-16 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeading
+            label="services"
+            bold="My"
+            regular={
+              <>
+                Ser<Accent>v</Accent>ices
+              </>
+            }
+          />
+          <FadeIn delay={0.2} y={20}>
+            <p className="max-w-sm font-inter text-[15px] leading-[1.75] text-[#666] lg:text-right">
+              Everything your business needs to look modern, load fast and rank better on Google.
+            </p>
           </FadeIn>
-        ))}
+        </div>
+
+        <div>
+          {SERVICES.map((service, i) => (
+            <FadeIn
+              key={service.name}
+              delay={i * 0.08}
+              className="group grid grid-cols-[auto_1fr] items-start gap-x-5 gap-y-2 border-t border-[#E2E2E2] py-7 last:border-b sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-x-10 lg:py-9"
+            >
+              <span
+                className="font-exo font-light leading-none text-[#BBBBBB] transition-colors duration-300 group-hover:text-[#FF6A00]"
+                style={{ fontSize: 'clamp(2rem, 4vw, 3.75rem)' }}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div className="flex flex-col gap-2">
+                <h3 className="font-exo font-semibold text-[#111]" style={{ fontSize: 'clamp(1.15rem, 2vw, 1.85rem)' }}>
+                  {service.name}
+                </h3>
+                <p className="max-w-2xl font-inter text-[14px] leading-[1.75] text-[#666] lg:text-[15px]">{service.description}</p>
+              </div>
+              <a
+                href="#contact"
+                onClick={() => selectService(service.name)}
+                aria-label={`Ask about ${service.name}`}
+                className="col-start-2 flex h-11 w-11 items-center justify-center border border-[#111] text-[#111] transition-colors duration-200 hover:border-[#FF6A00] hover:bg-[#FF6A00] hover:text-white sm:col-start-auto lg:h-14 lg:w-14"
+              >
+                <ArrowUpRight className="h-5 w-5" strokeWidth={1.75} />
+              </a>
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </section>
   )

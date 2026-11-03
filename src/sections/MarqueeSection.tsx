@@ -1,42 +1,47 @@
 import { useEffect, useRef, useState } from 'react'
 
-const IMAGES = [
-  'https://motionsites.ai/assets/hero-space-voyage-preview-eECLH3Yc.gif',
-  'https://motionsites.ai/assets/hero-codenest-preview-Cgppc2qV.gif',
-  'https://motionsites.ai/assets/hero-vex-ventures-preview-BczMFIiw.gif',
-  'https://motionsites.ai/assets/hero-stellar-ai-v2-preview-DjvxjG3C.gif',
-  'https://motionsites.ai/assets/hero-asme-preview-B_nGDnTP.gif',
-  'https://motionsites.ai/assets/hero-transform-data-preview-Cx5OU29N.gif',
-  'https://motionsites.ai/assets/hero-vitara-preview-Cjz2QYyU.gif',
-  'https://motionsites.ai/assets/hero-terra-preview-BFjrCr7T.gif',
-  'https://motionsites.ai/assets/hero-skyelite-preview-DHaZIgUv.gif',
-  'https://motionsites.ai/assets/hero-aethera-preview-DknSlcTa.gif',
-  'https://motionsites.ai/assets/hero-designpro-preview-D8c5_een.gif',
-  'https://motionsites.ai/assets/hero-stellar-ai-preview-D3HL6bw1.gif',
-  'https://motionsites.ai/assets/hero-xportfolio-preview-D4A8maiC.gif',
-  'https://motionsites.ai/assets/hero-orbit-web3-preview-BXt4OttD.gif',
-  'https://motionsites.ai/assets/hero-nexora-preview-cx5HmUgo.gif',
-  'https://motionsites.ai/assets/hero-evr-ventures-preview-DZxeVFEX.gif',
-  'https://motionsites.ai/assets/hero-planet-orbit-preview-DWAP8Z1P.gif',
-  'https://motionsites.ai/assets/hero-new-era-preview-CocuDUm9.gif',
-  'https://motionsites.ai/assets/hero-wealth-preview-B70idl_u.gif',
-  'https://motionsites.ai/assets/hero-luminex-preview-CxOP7ce6.gif',
-  'https://motionsites.ai/assets/hero-celestia-preview-0yO3jXO8.gif',
+// Short looping videos in /public/marquee (converted from the original GIFs: ~95% smaller).
+// Each has a .mp4 and a .webp poster frame shown until the video plays.
+const CLIPS = [
+  'space-voyage',
+  'codenest',
+  'vex-ventures',
+  'stellar-ai-v2',
+  'asme',
+  'transform-data',
+  'vitara',
+  'terra',
+  'skyelite',
+  'aethera',
+  'designpro',
+  'stellar-ai',
+  'xportfolio',
+  'orbit-web3',
+  'nexora',
+  'evr-ventures',
+  'planet-orbit',
+  'new-era',
+  'wealth',
+  'luminex',
 ]
 
-const ROW_ONE = [...IMAGES.slice(0, 11), ...IMAGES.slice(0, 11), ...IMAGES.slice(0, 11)]
-const ROW_TWO = [...IMAGES.slice(11), ...IMAGES.slice(11), ...IMAGES.slice(11)]
+const ROW_ONE = [...CLIPS.slice(0, 11), ...CLIPS.slice(0, 11), ...CLIPS.slice(0, 11)]
+const ROW_TWO = [...CLIPS.slice(11), ...CLIPS.slice(11), ...CLIPS.slice(11)]
 
-function Row({ images, transform }: { images: string[]; transform: string }) {
+function Row({ clips, transform }: { clips: string[]; transform: string }) {
   return (
     <div className="flex w-max gap-3" style={{ transform, willChange: 'transform' }}>
-      {images.map((src, i) => (
-        <img
+      {clips.map((clip, i) => (
+        <video
           key={i}
-          src={src}
-          alt=""
-          loading="lazy"
-          className="h-[270px] w-[420px] shrink-0 rounded-2xl object-cover"
+          data-src={`/marquee/${clip}.mp4`}
+          poster={`/marquee/${clip}.webp`}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-hidden="true"
+          className="h-[270px] w-[420px] shrink-0 bg-[#F7F7F7] object-cover"
         />
       ))}
     </div>
@@ -64,10 +69,31 @@ export default function MarqueeSection() {
     }
   }, [])
 
+  // Only tiles on (or near) the screen load and play; the rest stay as posters and pause
+  useEffect(() => {
+    const videos = sectionRef.current?.querySelectorAll<HTMLVideoElement>('video[data-src]') ?? []
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const { target, isIntersecting } of entries) {
+          const video = target as HTMLVideoElement
+          if (isIntersecting) {
+            if (!video.src) video.src = video.dataset.src ?? ''
+            video.play().catch(() => {})
+          } else if (!video.paused) {
+            video.pause()
+          }
+        }
+      },
+      { rootMargin: '200px' },
+    )
+    videos.forEach((video) => observer.observe(video))
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <section id="showcase" ref={sectionRef} className="flex flex-col gap-3 overflow-hidden bg-[#0C0C0C] pb-10 pt-24 sm:pt-32 md:pt-40">
-      <Row images={ROW_ONE} transform={`translateX(${offset - 200}px)`} />
-      <Row images={ROW_TWO} transform={`translateX(${-(offset - 200)}px)`} />
+    <section id="showcase" ref={sectionRef} className="flex flex-col gap-3 overflow-hidden bg-white pb-10 pt-4 sm:pt-6 lg:pt-8">
+      <Row clips={ROW_ONE} transform={`translateX(${offset - 200}px)`} />
+      <Row clips={ROW_TWO} transform={`translateX(${-(offset - 200)}px)`} />
     </section>
   )
 }

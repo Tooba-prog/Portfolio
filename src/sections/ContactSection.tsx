@@ -1,24 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
-import { Clock, Mail, MapPin } from 'lucide-react'
+import { Clock, Linkedin, Mail, MapPin, MessageCircle } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
 import ContactButton from '../components/ContactButton'
 import SocialIcon from '../components/SocialIcon'
-import { SITE } from '../data/site'
+import SectionHeading, { Accent, SectionLabel } from '../components/SectionHeading'
+import { FREE_AUDIT, SELECT_SERVICE_EVENT, SITE, whatsappLink } from '../data/site'
 
 const SERVICE_OPTIONS = [
   'WordPress Development',
-  'WooCommerce Stores',
-  'Speed Optimization',
-  'On-Page & Technical SEO',
-  'Maintenance & Support',
+  'Website Redesign',
+  'On-Page SEO',
+  'Technical SEO',
+  'Off-Page SEO',
+  FREE_AUDIT,
   'Something else',
 ]
 
-const FIELD =
-  'w-full rounded-[28px] border-2 border-[#D7E2EA]/25 bg-transparent px-6 py-4 font-light text-[#D7E2EA] placeholder:text-[#D7E2EA]/40 outline-none transition-colors duration-200 focus:border-[#D7E2EA]'
+const LINKEDIN = SITE.socials.find((social) => social.label === 'LinkedIn')?.href
 
-const LABEL = 'mb-2 block pl-2 text-xs font-medium uppercase tracking-widest text-[#D7E2EA]/60'
+// Underlined fields, like the line under the hero's links
+const FIELD =
+  'w-full border-b border-[#CFCFCF] bg-transparent py-3 font-inter text-[15px] text-[#111] placeholder:text-[#AAAAAA] outline-none transition-colors duration-200 focus:border-[#111]'
+
+const LABEL = 'block font-inter text-[12px] lowercase text-[#888]'
 
 // Web3Forms access key (set VITE_WEB3FORMS_KEY in .env.local and in Vercel). It is safe to expose.
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
@@ -34,6 +39,14 @@ const STATUS_TEXT: Record<Status, string> = {
 
 export default function ContactSection() {
   const [status, setStatus] = useState<Status>('idle')
+  const [service, setService] = useState(SERVICE_OPTIONS[0])
+
+  // Buttons elsewhere (e.g. "Get Free SEO Audit") pre-select a service before scrolling here
+  useEffect(() => {
+    const pick = (e: Event) => setService((e as CustomEvent<string>).detail)
+    window.addEventListener(SELECT_SERVICE_EVENT, pick)
+    return () => window.removeEventListener(SELECT_SERVICE_EVENT, pick)
+  }, [])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -72,6 +85,7 @@ export default function ContactSection() {
       if (!result.success) throw new Error(result.message)
       setStatus('success')
       form.reset()
+      setService(SERVICE_OPTIONS[0])
     } catch {
       setStatus('error')
     }
@@ -79,104 +93,111 @@ export default function ContactSection() {
 
   const details = [
     { icon: Mail, label: 'Email', value: SITE.email, href: `mailto:${SITE.email}` },
+    // Shown only once a WhatsApp number is set in site.ts
+    ...(SITE.whatsapp
+      ? [{ icon: MessageCircle, label: 'WhatsApp', value: `+${SITE.whatsapp}`, href: whatsappLink(), external: true }]
+      : []),
+    ...(LINKEDIN ? [{ icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/tooba-farid', href: LINKEDIN, external: true }] : []),
     { icon: MapPin, label: 'Location', value: SITE.location },
     { icon: Clock, label: 'Response time', value: SITE.availability },
-  ]
+  ] as { icon: typeof Mail; label: string; value: string; href?: string; external?: boolean }[]
 
   return (
-    <section id="contact" className="relative bg-[#0C0C0C] px-5 pb-20 pt-10 sm:px-8 sm:pb-24 md:px-10 md:pb-32">
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[50vh] w-[80vw] -translate-x-1/2 rounded-full opacity-15 blur-[120px]"
-        style={{ background: 'radial-gradient(ellipse, #7621B0 0%, #B600A8 40%, transparent 70%)' }}
-      />
-
-      <FadeIn delay={0} y={40} className="relative">
-        <h2
-          className="hero-heading mb-6 text-center font-black uppercase leading-none tracking-tight"
-          style={{ fontSize: 'clamp(3rem, 12vw, 160px)' }}
-        >
-          Contact
-        </h2>
-      </FadeIn>
-      <FadeIn delay={0.1} y={20} className="relative">
-        <p
-          className="mx-auto mb-16 max-w-xl text-center font-light leading-relaxed text-[#D7E2EA]/70 sm:mb-20 md:mb-24"
-          style={{ fontSize: 'clamp(0.95rem, 1.6vw, 1.25rem)' }}
-        >
-          Have a project in mind? Tell me a little about it and let&apos;s build something incredible together.
-        </p>
-      </FadeIn>
-
-      <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
-        <FadeIn delay={0.15} x={-40} y={0} className="flex flex-col gap-4">
-          {details.map(({ icon: Icon, label, value, href }) => {
-            const content = (
-              <>
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-[#D7E2EA]/25 text-[#D7E2EA]">
-                  <Icon size={20} />
-                </span>
-                <span className="min-w-0">
-                  <span className="block text-xs font-medium uppercase tracking-widest text-[#D7E2EA]/50">{label}</span>
-                  <span className="block break-words font-light text-[#D7E2EA]" style={{ fontSize: 'clamp(1rem, 1.4vw, 1.2rem)' }}>
-                    {value}
-                  </span>
-                </span>
-              </>
-            )
-            const classes = 'flex items-center gap-5 rounded-[32px] border-2 border-[#D7E2EA]/15 p-5 sm:p-6'
-
-            return href ? (
-              <a key={label} href={href} className={`${classes} transition-colors duration-200 hover:border-[#D7E2EA]`}>
-                {content}
-              </a>
-            ) : (
-              <div key={label} className={classes}>
-                {content}
-              </div>
-            )
-          })}
-
-          <div className="mt-4 flex flex-col gap-4 pl-2">
-            <span className="text-xs font-medium uppercase tracking-widest text-[#D7E2EA]/50">Follow me</span>
-            <div className="flex gap-3">
-              {SITE.socials.map((social) => (
-                <SocialIcon key={social.label} {...social} />
-              ))}
-            </div>
+    <section id="contact" className="bg-white px-4 py-20 sm:px-8 lg:px-[5.6vw] lg:py-28">
+      <div className="grid gap-12 bg-[#F7F7F7] px-5 py-14 sm:px-10 lg:grid-cols-[1fr_1.3fr] lg:gap-20 lg:px-14 lg:py-20">
+        <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-6">
+            <SectionHeading
+              label="contact"
+              bold="Get In"
+              regular={
+                <>
+                  T<Accent>o</Accent>uch
+                </>
+              }
+            />
+            <FadeIn delay={0.15} y={20}>
+              <p className="max-w-md font-inter text-[15px] leading-[1.75] text-[#666] lg:text-[16px]">
+                Have a project in mind? Tell me a little about it and let&apos;s build something incredible together.
+              </p>
+            </FadeIn>
           </div>
-        </FadeIn>
 
-        <FadeIn delay={0.25} x={40} y={0}>
-          <form
-            onSubmit={handleSubmit}
-            className="flex flex-col gap-5 rounded-[40px] border-2 border-[#D7E2EA] p-6 sm:rounded-[50px] sm:p-8 md:rounded-[60px] md:p-10"
-          >
-            <div className="grid gap-5 sm:grid-cols-2">
+          <FadeIn delay={0.2} y={20} className="flex flex-col">
+            {details.map(({ icon: Icon, label, value, href, external }) => {
+              const content = (
+                <>
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center bg-white text-[#FF6A00]">
+                    <Icon size={18} strokeWidth={1.75} />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block font-inter text-[12px] lowercase text-[#888]">{label}</span>
+                    <span className="block break-words font-exo text-[17px] font-medium text-[#111] lg:text-[19px]">{value}</span>
+                  </span>
+                </>
+              )
+              const classes = 'flex items-center gap-4 border-b border-[#E2E2E2] py-4 first:pt-0'
+
+              return href ? (
+                <a
+                  key={label}
+                  href={href}
+                  {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className={`${classes} transition-colors duration-200 hover:text-[#FF6A00]`}
+                >
+                  {content}
+                </a>
+              ) : (
+                <div key={label} className={classes}>
+                  {content}
+                </div>
+              )
+            })}
+
+            <div className="mt-8 flex flex-col gap-4">
+              <SectionLabel>follow me</SectionLabel>
+              <div className="flex gap-3">
+                {SITE.socials.map((social) => (
+                  <SocialIcon key={social.label} {...social} />
+                ))}
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+
+        <FadeIn delay={0.25} y={30}>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-7 bg-white p-6 sm:p-8 lg:p-10">
+            <div className="grid gap-7 sm:grid-cols-2">
               <label>
-                <span className={LABEL}>Name</span>
+                <span className={LABEL}>name</span>
                 <input name="name" required autoComplete="name" placeholder="Your name" className={FIELD} />
               </label>
               <label>
-                <span className={LABEL}>Email</span>
+                <span className={LABEL}>email</span>
                 <input name="email" type="email" required autoComplete="email" placeholder="you@email.com" className={FIELD} />
               </label>
             </div>
             <label>
-              <span className={LABEL}>Service</span>
-              <select name="service" defaultValue={SERVICE_OPTIONS[0]} className={`${FIELD} appearance-none`}>
+              <span className={LABEL}>service</span>
+              <select
+                name="service"
+                value={service}
+                onChange={(e) => setService(e.target.value)}
+                className={`${FIELD} cursor-pointer`}
+              >
                 {SERVICE_OPTIONS.map((option) => (
-                  <option key={option} value={option} className="bg-[#0C0C0C]">
+                  <option key={option} value={option}>
                     {option}
                   </option>
                 ))}
               </select>
             </label>
             <label>
-              <span className={LABEL}>Message</span>
+              <span className={LABEL}>message</span>
               <textarea
                 name="message"
                 required
-                rows={5}
+                rows={4}
                 placeholder="Tell me about your project, timeline and budget..."
                 className={`${FIELD} resize-none`}
               />
@@ -187,8 +208,8 @@ export default function ContactSection() {
 
             <div className="mt-2 flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
               <p
-                className={`text-center text-sm font-light sm:text-left ${
-                  status === 'success' ? 'text-[#D7E2EA]' : status === 'error' ? 'text-[#FF7A7A]' : 'text-[#D7E2EA]/50'
+                className={`text-center font-inter text-[13px] sm:text-left ${
+                  status === 'success' ? 'text-[#111]' : status === 'error' ? 'text-[#D93025]' : 'text-[#888]'
                 }`}
                 aria-live="polite"
               >

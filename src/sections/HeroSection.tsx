@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import type { FormEvent } from 'react'
-import { ArrowUpRight, Dribbble, Instagram, Linkedin, Search, Twitter, X } from 'lucide-react'
+import { ArrowUpRight, Dribbble, Instagram, Linkedin, Twitter, X } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
-import { SITE } from '../data/site'
+import { FREE_AUDIT, SITE, selectService } from '../data/site'
 
 const ORANGE = '#FF6A00'
 
@@ -55,6 +54,27 @@ function RotatingBadge() {
   )
 }
 
+function HeroButtons() {
+  const base = 'flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium transition-colors sm:px-5 sm:text-[14px] lg:px-6 lg:py-3 lg:text-[15px]'
+  return (
+    <>
+      <a
+        href="#contact"
+        onClick={() => selectService(FREE_AUDIT)}
+        className={`${base} bg-white hover:bg-[#FFF3EB]`}
+        style={{ color: ORANGE }}
+      >
+        Get Free SEO Audit
+        <ArrowUpRight className="h-4 w-4" strokeWidth={1.75} />
+      </a>
+      <a href="#projects" className={`${base} border border-[#111] text-[#111] hover:bg-[#111] hover:text-white`}>
+        View My Work
+        <ArrowUpRight className="h-4 w-4" strokeWidth={1.75} />
+      </a>
+    </>
+  )
+}
+
 function Sparkle({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 48 48" className={className} fill="none" stroke="#3A3A3A" strokeWidth="1.6" strokeLinejoin="round">
@@ -75,8 +95,6 @@ function MenuIcon() {
 
 export default function HeroSection() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [query, setQuery] = useState('')
-  const [notFound, setNotFound] = useState(false)
   const [hasPortrait, setHasPortrait] = useState(true)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -93,41 +111,12 @@ export default function HeroSection() {
     }
   }, [menuOpen])
 
-  // Jumps to the first section below the hero that mentions the search text
-  const handleSearch = (e: FormEvent) => {
-    e.preventDefault()
-    const term = query.trim().toLowerCase()
-    if (!term) return
-    const match = [...document.querySelectorAll('main > section:not(#top), main > footer')].find((el) =>
-      el.textContent?.toLowerCase().includes(term),
-    )
-    setNotFound(!match)
-    match?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <section id="top" className="relative bg-white font-exo text-[#111]">
       {/* Top bar: search, logo, menu */}
       <FadeIn delay={0} y={-20} className="relative z-30 grid grid-cols-[1fr_auto_1fr] items-center px-5 pt-5 sm:px-8 lg:px-[5.6vw] lg:pt-7">
-        <form onSubmit={handleSearch} className="relative hidden w-[150px] items-center border-b border-[#111] pb-1.5 sm:flex lg:w-[170px]">
-          <button type="submit" aria-label="Search" className="shrink-0">
-            <Search className="h-[17px] w-[17px] text-[#111]" strokeWidth={2} />
-          </button>
-          <input
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value)
-              setNotFound(false)
-            }}
-            placeholder="search"
-            aria-label="Search the page"
-            className="w-full bg-transparent pl-2 text-right font-exo text-[14px] text-[#111] outline-none placeholder:text-[#444]"
-          />
-          {notFound && (
-            <span className="absolute left-0 top-full mt-1 font-inter text-[11px] text-[#999]">No results</span>
-          )}
-        </form>
-        <span className="sm:hidden" />
+        {/* Empty left column keeps the logo centred */}
+        <span />
 
         <a href="#top" className="font-exo text-[22px] font-bold tracking-[0.06em] lg:text-[26px]">
           {SITE.firstName.toUpperCase()}
@@ -190,22 +179,9 @@ export default function HeroSection() {
             <RotatingBadge />
           </FadeIn>
 
-          <FadeIn delay={0.25} y={-10} className="absolute right-4 top-6 flex gap-2.5 sm:right-6 sm:top-7 sm:gap-3 lg:right-9 lg:top-9 lg:gap-4">
-            <a
-              href="#contact"
-              className="flex items-center gap-2 bg-white px-3.5 py-2 text-[12px] font-medium transition-colors hover:bg-[#FFF3EB] sm:px-5 sm:py-2.5 sm:text-[14px] lg:px-6 lg:py-3 lg:text-[15px]"
-              style={{ color: ORANGE }}
-            >
-              Let&apos;s Talk
-              <ArrowUpRight className="h-4 w-4" strokeWidth={1.75} />
-            </a>
-            <a
-              href="#projects"
-              className="flex items-center gap-2 border border-[#111] px-3.5 py-2 text-[12px] font-medium text-[#111] transition-colors hover:bg-[#111] hover:text-white sm:px-5 sm:py-2.5 sm:text-[14px] lg:px-6 lg:py-3 lg:text-[15px]"
-            >
-              My Work
-              <ArrowUpRight className="h-4 w-4" strokeWidth={1.75} />
-            </a>
+          {/* Top-right from sm up; on phones the same buttons sit under the description */}
+          <FadeIn delay={0.25} y={-10} className="absolute right-6 top-7 hidden gap-3 sm:flex lg:right-9 lg:top-9 lg:gap-4">
+            <HeroButtons />
           </FadeIn>
 
           {/* "hello people / i am Creative" + portrait pill */}
@@ -225,7 +201,8 @@ export default function HeroSection() {
 
             <FadeIn delay={0.4} y={20} className="relative">
               <Sparkle className="absolute -right-4 -top-6 h-8 w-8 sm:-right-[1.6vw] sm:-top-[2.2vw] sm:h-[3.2vw] sm:w-[3.2vw] lg:max-h-[52px] lg:max-w-[52px]" />
-              <div className="relative h-[96px] w-[220px] sm:h-[9.5vw] sm:w-[22vw] lg:max-h-[150px] lg:max-w-[340px]">
+              {/* Size container: the names below are measured in cqh (percent of this pill's height) */}
+              <div className="relative h-[96px] w-[220px] [container-type:size] sm:h-[9.5vw] sm:w-[22vw] lg:max-h-[150px] lg:max-w-[340px]">
                 <div
                   className="absolute inset-0 overflow-hidden rounded-full bg-[#1C1C1C]"
                   style={{
@@ -234,16 +211,23 @@ export default function HeroSection() {
                     backgroundSize: '14px 14px',
                   }}
                 >
-                  <span
-                    className="absolute inset-0 flex items-center justify-center whitespace-nowrap font-signature text-[#BDBDBD]"
-                    style={{ fontSize: 'clamp(2.25rem, 4vw, 3.75rem)' }}
-                  >
-                    {SITE.name}
-                  </span>
+                  {/* First name centred in the space left of the portrait, last name right of it.
+                      The portrait is 112cqh tall at a 588:520 ratio, so it is ~126.6cqh wide (63.3cqh each side of centre). */}
+                  {SITE.name.split(' ').map((part, i) => (
+                    <span
+                      key={part}
+                      data-signature-part
+                      className={`absolute inset-y-0 flex w-[calc(50%-63.3cqh)] items-center justify-center whitespace-nowrap font-signature text-[26cqh] text-[#BDBDBD] ${
+                        i === 0 ? 'left-0 pl-[6cqh]' : 'right-0 pr-[6cqh]'
+                      }`}
+                    >
+                      {part}
+                    </span>
+                  ))}
                 </div>
                 {hasPortrait && (
                   // Slightly taller than the pill so the head just clears the top, clipped flush at the pill's bottom
-                  <div className="absolute inset-x-0 bottom-0 top-[-12%] overflow-hidden rounded-b-full">
+                  <div className="absolute inset-x-0 bottom-0 top-[-12cqh] overflow-hidden rounded-b-full">
                     <img
                       src={PORTRAIT_SRC}
                       alt={SITE.name}
@@ -279,6 +263,10 @@ export default function HeroSection() {
               A Freelance WordPress Developer and SEO Specialist based in {SITE.location}. I build fast, mobile-friendly
               websites that Google can find, index and rank.
             </p>
+          </FadeIn>
+
+          <FadeIn delay={0.65} y={10} className="mt-7 flex flex-wrap justify-center gap-2.5 sm:hidden">
+            <HeroButtons />
           </FadeIn>
 
           <FadeIn delay={0.7} y={10} className="mt-6 flex items-center justify-center gap-4 lg:mt-8">

@@ -8,7 +8,9 @@ const ICONS: Record<string, LucideIcon> = {
   Twitter,
 }
 
-export default function SocialIcon({ label, href }: { label: string; href: string }) {
+type SocialIconProps = { label: string; href: string; dark?: boolean }
+
+export default function SocialIcon({ label, href, dark = false }: SocialIconProps) {
   const Icon = ICONS[label] ?? Instagram
 
   return (
@@ -17,9 +19,11 @@ export default function SocialIcon({ label, href }: { label: string; href: strin
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-[#D7E2EA]/25 text-[#D7E2EA] transition-colors duration-200 hover:border-[#D7E2EA] hover:bg-[#D7E2EA]/10"
+      className={`flex h-11 w-11 items-center justify-center border transition-colors duration-200 hover:border-[#FF6A00] hover:bg-[#FF6A00] hover:text-white ${
+        dark ? 'border-white/20 text-white' : 'border-[#DDDDDD] text-[#111]'
+      }`}
     >
-      <Icon size={18} />
+      <Icon size={17} strokeWidth={1.75} />
     </a>
   )
 }

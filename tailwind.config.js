@@ -4,8 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Kanit', 'sans-serif'],
-        // Hero only
+        sans: ['Inter', 'sans-serif'],
         exo: ['"Exo 2"', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
         signature: ['"Mrs Saint Delafield"', 'cursive'],
