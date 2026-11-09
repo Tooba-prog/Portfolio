@@ -11,7 +11,7 @@ export const SITE = {
   availability: 'Usually replies within 24 hours',
   socials: [
     { label: 'Instagram', href: 'https://www.instagram.com/' },
-    { label: 'Dribbble', href: 'https://dribbble.com/' },
+    { label: 'Behance', href: 'https://www.behance.net/toobafarid_' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/tooba-farid/' },
     { label: 'Twitter', href: 'https://x.com/' },
   ],

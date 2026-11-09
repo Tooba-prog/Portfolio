@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowUpRight, Dribbble, Instagram, Linkedin, Twitter, X } from 'lucide-react'
+import { ArrowUpRight, Instagram, Linkedin, Twitter, X } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import FadeIn from '../components/FadeIn'
+import { BehanceIcon } from '../components/SocialIcon'
 import { FREE_AUDIT, SITE, selectService } from '../data/site'
 
 const ORANGE = '#FF6A00'
@@ -15,7 +16,7 @@ const HERO_LINKS = [
   { label: 'contact', href: '#contact' },
 ]
 
-const SOCIAL_ICONS: Record<string, LucideIcon> = { Instagram, Dribbble, LinkedIn: Linkedin, Twitter }
+const SOCIAL_ICONS: Record<string, LucideIcon> = { Instagram, LinkedIn: Linkedin, Twitter }
 
 // Companies from Tooba's LinkedIn, set as simple wordmarks (not their official logos)
 const COMPANIES = [
@@ -284,7 +285,11 @@ export default function HeroSection() {
                     aria-label={social.label}
                     className="text-[#111] transition-colors hover:text-[#FF6A00]"
                   >
-                    <Icon className="h-[15px] w-[15px] lg:h-[17px] lg:w-[17px]" strokeWidth={2} />
+                    {social.label === 'Behance' ? (
+                      <BehanceIcon className="h-[15px] w-[15px] lg:h-[17px] lg:w-[17px]" />
+                    ) : (
+                      <Icon className="h-[15px] w-[15px] lg:h-[17px] lg:w-[17px]" strokeWidth={2} />
+                    )}
                   </a>
                 )
               })}
