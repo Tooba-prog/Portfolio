@@ -67,6 +67,9 @@ const PROJECTS: Project[] = [
   },
 ]
 
+// "View more on Behance" uses the Behance link from the social list; hidden if there isn't one
+const BEHANCE = SITE.socials.find((social) => social.label === 'Behance')?.href
+
 const shot = (slug: string, kind: 'desktop' | 'desktop-second' | 'mobile') => `/projects/${slug}-${kind}.webp`
 const domain = (url: string) => url.replace(/^https?:\/\//, '').replace(/\/$/, '')
 
@@ -290,10 +293,10 @@ export default function ProjectsSection() {
         ))}
       </div>
 
-      {SITE.behance && (
+      {BEHANCE && (
         <FadeIn y={20} className="mt-10 flex justify-center">
           <a
-            href={SITE.behance}
+            href={BEHANCE}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 border border-[#111] px-6 py-3.5 font-exo text-[15px] font-medium text-[#111] transition-colors hover:bg-[#111] hover:text-white"
